@@ -42,7 +42,7 @@
         <div class="collapse navbar-collapse">
           <ul class="nav navbar-nav">
             {% for item in mainMenu %}
-                <li {% if item.active|default:False %}class="active"{% endif %}>
+                <li {% if item.title == activeMenuItem %}class="active"{% endif %}>
                     <a href="{{ item.href|default:"#" }}">
                         {{ item.title }}
                     </a>
