@@ -3,6 +3,7 @@ function RealTimeWebUI()
     var self = this;
     self._canSend = false;
     self._registered = new Object;
+    self._reconnectRetries = 0;
 
     self.register = function(objectID, callback) {
         if (self._registered[objectID] === undefined) {
@@ -36,6 +37,7 @@ function RealTimeWebUI()
     };
 
     self._onOpen = function(event) {
+        self._reconnectRetries = 0;
         self._canSend = true;
         var authMessage = {cmd: '__auth__', secret: globalModelWebsocketSecret};
         self._websocket.send(JSON.stringify(authMessage));
@@ -65,7 +67,6 @@ function RealTimeWebUI()
     self._onError = function(event) {
         console.error("Error in websocket: " + event);
         self._canSend = false;
-        self._retryConnect();
     };
 
     self._onClose = function(event) {
@@ -75,6 +76,11 @@ function RealTimeWebUI()
     };
 
     self._retryConnect = function() {
+        self._reconnectRetries += 1;
+        if ( self._reconnectRetries > 10 ) {
+            console.error("Retries exceeded for connecting to server");
+            return;
+        }
         setTimeout(self._connect, 1000);
     };
 

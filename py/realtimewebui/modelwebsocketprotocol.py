@@ -13,6 +13,8 @@ render.DEFAULTS['globalModelWebsocketSecret'] = _secret
 
 class ModelWebSocketProtocol(WebSocketServerProtocol):
     model = None
+    __authTimeout = None
+    __registered = []
 
     def onOpen(self):
         self.__authTimeout = None
