@@ -14,6 +14,21 @@ function RealTimeWebUI()
         }
     };
 
+    self.unregister = function(objectID, callback) {
+        if (self._registered[objectID] === undefined)
+            return;
+        for (var i in self._registered[objectID]) {
+            if (self._registered[objectID][i] == callback) {
+                self._registered[objectID].splice(i, 1);
+                break;
+            }
+        }
+        if (self._registered[objectID].length == 0) {
+            self._registered[objectID] = undefined;
+            self._sendUnregisterMessage(objectID);
+        }
+    };
+
     self.command = function(command, parameters) {
         var data = {cmd: command, parameters: parameters};
         self._websocket.send(JSON.stringify(data))
@@ -23,7 +38,14 @@ function RealTimeWebUI()
         if (! self._canSend)
             return;
         var data = {objectID: objectID, cmd: '__register__'};
-        self._websocket.send(JSON.stringify(data))
+        self._websocket.send(JSON.stringify(data));
+    }
+
+    self._sendUnregisterMessage = function(objectID) {
+        if (! self._canSend)
+            return;
+        var data = {objectID: objectID, cmd: '__unregister__'};
+        self._websocket.send(JSON.stringify(data));
     }
 
     self._connect = function() {
