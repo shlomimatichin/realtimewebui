@@ -25,6 +25,16 @@ def subset(objectID, key, value):
     model.set(objectID, all)
 
 
+def subunset(objectID, key):
+    global model
+    all = model.get(objectID)
+    if all is None:
+        all = dict()
+    if key in all:
+        del all[key]
+    model.set(objectID, all)
+
+
 def subsetDefault(objectID, key, value):
     global model
     all = model.get(objectID)
