@@ -5,6 +5,9 @@ from realtimewebui import render
 import os
 
 
+GLOBAL_PARAMETERS = dict()
+
+
 def rootResource():
     projectRootDir = os.path.dirname(os.path.dirname(os.path.dirname(
         os.path.abspath(realtimewebui.__file__))))
@@ -21,7 +24,8 @@ class Renderer(resource.Resource):
     def __init__(self, templateName, parameters):
         resource.Resource.__init__(self)
         self._templateName = templateName
-        self._parameters = parameters
+        self._parameters = dict(GLOBAL_PARAMETERS)
+        self._parameters.update(parameters)
 
     def render(self, request):
         return render.render(self._templateName, self._parameters)
