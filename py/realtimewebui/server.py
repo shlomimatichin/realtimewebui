@@ -13,6 +13,17 @@ from realtimewebui import modelwebsocketprotocol
 from realtimewebui import render
 from realtimewebui import tojs
 
+import sys
+import signal
+
+
+def _exit(*args):
+    reactor.stop()
+    sys.exit()
+
+signal.signal(signal.SIGTERM, _exit)
+signal.signal(signal.SIGINT, _exit)
+
 
 class _PublicHTMLRealm(object):
     implements(IRealm)
