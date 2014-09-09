@@ -2,9 +2,8 @@ import os
 if 'DJANGO_SETTINGS_MODULE' not in os.environ:
     os.environ['DJANGO_SETTINGS_MODULE'] = __name__
 SECRET_KEY = "ABAB"
-import realtimewebui
-_htmlDir = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(
-    os.path.abspath(realtimewebui.__file__)))), "html")
+from realtimewebui import config
+_htmlDir = os.path.join(config.REALTIMEWEBUI_ROOT_DIRECTORY, "html")
 TEMPLATE_DIRS = [_htmlDir]
 import django.template.loader
 

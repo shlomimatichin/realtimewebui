@@ -1,22 +1,16 @@
 from twisted.web import resource
 from twisted.web import static
-import realtimewebui
+from realtimewebui import config
 from realtimewebui import render
-import os
 
 
 GLOBAL_PARAMETERS = dict()
 
 
 def rootResource():
-    projectRootDir = os.path.dirname(os.path.dirname(os.path.dirname(
-        os.path.abspath(realtimewebui.__file__))))
-    externalsDir = os.path.join(projectRootDir, "externals")
-    jsDir = os.path.join(projectRootDir, "js")
     root = resource.Resource()
-    root.putChild("externals", static.File(externalsDir))
-    root.putChild("realtimewebui", static.File(jsDir))
-    root.putChild("index", Renderer("index.html", {}))
+    root.putChild("realtimewebui", static.File(config.REALTIMEWEBUI_ROOT_DIRECTORY))
+    root.putChild("", Renderer("index.html", {}))
     return root
 
 
