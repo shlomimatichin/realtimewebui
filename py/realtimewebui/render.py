@@ -1,24 +1,29 @@
 import os
-if 'DJANGO_SETTINGS_MODULE' not in os.environ:
-    os.environ['DJANGO_SETTINGS_MODULE'] = __name__
-SECRET_KEY = "ABAB"
+import jinja2
 from realtimewebui import config
-_htmlDir = os.path.join(config.REALTIMEWEBUI_ROOT_DIRECTORY, "html")
-TEMPLATE_DIRS = [_htmlDir]
-import django.template.loader
-
 
 DEFAULTS = dict(title="UI", brand="UI")
+_htmlDir = os.path.join(config.REALTIMEWEBUI_ROOT_DIRECTORY, "html")
+_templateDirs = [_htmlDir]
+_loader = None
+_env = None
 
 
 def addTemplateDir(dir):
-    TEMPLATE_DIRS.append(dir)
+    global _templateDirs
+    global _loader
+    global _env
+    _templateDirs.append(dir)
+    _loader = jinja2.FileSystemLoader(_templateDirs)
+    _env = jinja2.Environment(loader=_loader)
 
 
 def render(template, parameters):
+    global _env
+
     withDefaults = dict(DEFAULTS)
     withDefaults.update(parameters)
-    content = django.template.loader.render_to_string(template, withDefaults)
+    content = _env.get_template(template).render(**withDefaults)
     return content.encode('utf-8')
 
 

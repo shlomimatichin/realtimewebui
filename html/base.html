@@ -20,8 +20,8 @@
         }
     </style>
     <script>
-        var globalModelWebsocketSecret = "{{globalModelWebsocketSecret|default:'no secret'}}";
-        var globalModelWebsocketPort = {{globalModelWebsocketPort|default:0}};
+        var globalModelWebsocketSecret = "{{globalModelWebsocketSecret}}";
+        var globalModelWebsocketPort = {{globalModelWebsocketPort}};
     </script>
 {% block head %}{% endblock %}
 </head>
@@ -43,7 +43,7 @@
           <ul class="nav navbar-nav">
             {% for item in mainMenu %}
                 <li {% if item.title == activeMenuItem %}class="active"{% endif %}>
-                    <a href="{{ item.href|default:"#" }}">
+                    <a href="{{ item.href|default('#') }}">
                         {{ item.title }}
                     </a>
                 </li>
