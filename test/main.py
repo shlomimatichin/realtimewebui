@@ -13,4 +13,5 @@ render.addTemplateDir(".")
 tojs.set("yuvu", {'name': 'yuvu'})
 callbacks.callbacks["changeYuvu"] = changeYuvu
 root = rootresource.rootResource()
-server.runUnsecured(root, 2000, 2001)
+# server.runUnsecured(root, 2000, 2001)
+server.runSecured(root, 2000, 2001, "b", "b")
