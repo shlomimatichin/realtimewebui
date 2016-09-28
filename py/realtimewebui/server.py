@@ -19,7 +19,7 @@ signal.signal(signal.SIGINT, _exit)
 
 
 def _websocketFactory(webSocketPort):
-    websocketFactory = WebSocketServerFactory("ws://localhost:%d" % webSocketPort, debug=False)
+    websocketFactory = WebSocketServerFactory("ws://localhost:%d" % webSocketPort)
     modelwebsocketprotocol.ModelWebSocketProtocol.model = tojs.model
     websocketFactory.protocol = modelwebsocketprotocol.ModelWebSocketProtocol
     reactor.listenTCP(webSocketPort, websocketFactory)
