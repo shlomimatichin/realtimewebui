@@ -1,4 +1,5 @@
 from twisted.internet import reactor
+import simplejson
 
 
 class Model:
@@ -18,6 +19,17 @@ class Model:
 
     def unregister(self, objectID, handler):
         self._objects[objectID].unregister(handler)
+
+    def storeJSONFile(self, path):
+        obj = {k: v.getValue() for (k, v) in self._objects.iteritems()}
+        with open(path, "w") as f:
+            simplejson.dump(obj, f, indent=2)
+
+    def loadJSONFile(self, path):
+        with open(path) as f:
+            data = simplejson.load(f)
+        for key, value in data.iteritems():
+            self.set(key, value)
 
     def _emplace(self, objectID):
         if objectID not in self._objects:
