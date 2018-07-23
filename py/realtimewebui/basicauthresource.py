@@ -8,7 +8,7 @@ class BasicAuthResource(resource.Resource):
         self._username = username
         self._password = password
         self._expectedAuth = \
-            "Basic " + base64.encodestring('%s:%s' % (username, password)).replace('\n', '')
+            "Basic " + base64.b64encode(('%s:%s' % (username, password)).encode()).decode()
         resource.Resource.__init__(self)
 
     def getChild(self, path, request):
@@ -37,7 +37,7 @@ class BasicAuthResource(resource.Resource):
         return True
 
     def _replyNotAllowed(self, request):
-        request.setResponseCode(401, "Not Allowed")
+        request.setResponseCode(401, b"Not Allowed")
         request.setHeader('WWW-Authenticate', 'Basic realm="realtimewebui"')
         request.setHeader('Content-type', 'text/html')
-        request.write("Not Allowed")
+        request.write(b"Not Allowed")

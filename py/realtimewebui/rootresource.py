@@ -8,10 +8,7 @@ GLOBAL_PARAMETERS = dict()
 
 
 def rootResource():
-    root = resource.Resource()
-    root.putChild("realtimewebui", static.File(config.REALTIMEWEBUI_ROOT_DIRECTORY))
-    root.putChild("", Renderer("index.html", {}))
-    return root
+    return RootResource()
 
 
 class Renderer(resource.Resource):
@@ -23,3 +20,13 @@ class Renderer(resource.Resource):
 
     def render(self, request):
         return render.render(self._templateName, self._parameters)
+
+
+class RootResource(resource.Resource):
+    def getChildWithDefault(self, path, request):
+        path = path.decode()
+        if path == "realtimewebui":
+            return static.File(config.REALTIMEWEBUI_ROOT_DIRECTORY)
+        if path == '':
+            return Renderer("index.html", {})
+        return Renderer(path, {})

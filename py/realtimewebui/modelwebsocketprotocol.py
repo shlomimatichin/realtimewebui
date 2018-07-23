@@ -7,7 +7,7 @@ import random
 import string
 
 
-_secret = "".join(random.choice(string.letters) for x in xrange(128))
+_secret = "".join(random.choice(string.ascii_letters) for x in range(128))
 render.DEFAULTS['globalModelWebsocketSecret'] = _secret
 
 
@@ -44,7 +44,7 @@ class ModelWebSocketProtocol(WebSocketServerProtocol):
 
     def updateObject(self, objectID):
         data = dict(objects={objectID: self.model.get(objectID)}, type='updateObjects')
-        self.sendMessage(simplejson.dumps(data), isBinary=False)
+        self.sendMessage(simplejson.dumps(data).encode(), isBinary=False)
 
     def __timeout(self):
         self.__authTimeout = None

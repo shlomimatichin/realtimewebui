@@ -35,4 +35,4 @@ def renderToFile(output, template, parameters):
 
 if __name__ == "__main__":
     import sys
-    print render(sys.argv[1], {})
+    print(render(sys.argv[1], {}))
